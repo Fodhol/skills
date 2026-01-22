@@ -26,7 +26,7 @@ Create production-quality Semgrep rules with proper testing and validation.
 ## When NOT to Use
 
 Do NOT use this skill for:
-- Running existing Semgrep rulesets (use the `semgrep` skill instead)
+- Running existing Semgrep rulesets
 - General static analysis without custom rules (use `static-analysis` plugin)
 - One-off scans where existing rules suffice
 - Non-Semgrep pattern matching needs
@@ -87,7 +87,7 @@ This workflow is **strict** - do not skip steps:
 - **Test-first is mandatory**: Never write a rule without test cases
 - **100% test pass is required**: "Most tests pass" is not acceptable
 - **Optimization comes last**: Only simplify patterns after all tests pass
-- **Documentation reading is required**: Fetch external docs before writing complex rules
+- **Documentation reading is required**: Fetch external docs before writing rules
 
 ## Overview
 
@@ -114,7 +114,7 @@ This skill guides creation of Semgrep rules that detect security vulnerabilities
 rules:
   - id: insecure-eval
     languages: [python]
-    severity: ERROR
+    severity: HIGH
     message: User input passed to eval() allows code execution
     mode: taint
     pattern-sources:
@@ -132,13 +132,13 @@ eval(request.args.get('code'))
 eval("print('safe')")
 ```
 
-Run tests: `semgrep --test --config rule.yaml test-file`
+Run tests (from rule directory): `semgrep --test --config rule.yaml test-file`
 
 ## Quick Reference
 
 | Task | Command |
 |------|---------|
-| Run tests | `semgrep --test --config rule.yaml test-file` |
+| Run tests | `cd <rule-dir> && semgrep --test --config rule.yaml test-file` |
 | Validate YAML | `semgrep --validate --config rule.yaml` |
 | Dump AST | `semgrep --dump-ast -l <lang> <file>` |
 | Debug taint flow | `semgrep --dataflow-traces -f rule.yaml file` |
@@ -167,15 +167,17 @@ Run tests: `semgrep --test --config rule.yaml test-file`
 
 Understand the bug pattern, identify target language, determine if taint mode applies.
 
-Before writing complex rules, see [Documentation](#documentation) for required reading.
+Before writing any rule, see [Documentation](#documentation) for required reading.
 
 ### 2. Create Test Cases First
 
 **Why test-first?** Writing tests before the rule forces you to think about both vulnerable AND safe patterns. Rules written without tests often have hidden false positives (matching safe code) or false negatives (missing vulnerable variants). Tests make these visible immediately.
 
 Create directory and test file with annotations:
-- `// ruleid: <id>` - Line BEFORE code that SHOULD match
-- `// ok: <id>` - Line BEFORE code that should NOT match
+- `<comment> ruleid: <id>` - Line BEFORE code that SHOULD match (use language-appropriate comment syntax: `#` for Python, `//` for JS/TS/Java/Go/C)
+- `<comment> ok: <id>` - Line BEFORE code that should NOT match
+
+The annotation line must contain ONLY the comment marker and annotation (e.g., `# ruleid: my-rule`). No other text, comments, or code on the same line.
 
 ### 3. Analyze AST Structure
 
@@ -195,7 +197,7 @@ See [workflow.md]({baseDir}/references/workflow.md) for detailed patterns and ex
 semgrep --test --config rule.yaml test-file
 ```
 
-**Verification checkpoint**: Output MUST show `✓ All tests passed`. Do not proceed to optimization until this is achieved.
+**Verification checkpoint**: Output MUST show "All tests passed". Do not proceed to optimization until this is achieved.
 
 For debugging taint rules:
 ```bash
@@ -207,7 +209,6 @@ semgrep --dataflow-traces -f rule.yaml test-file
 **After all tests pass**, analyze the rule for redundant or unnecessary patterns:
 
 **Common optimizations:**
-- **Quote variants**: Semgrep treats `"` and `'` as equivalent - remove duplicate patterns
 - **Subset patterns**: `func(...)` already matches `func()` - remove the more specific one
 - **Redundant ellipsis**: `func($X, ...)` covers `func($X)` - keep only the general form
 
@@ -217,7 +218,7 @@ pattern-either:
   - pattern: hashlib.md5(...)
   - pattern: md5(...)
   - pattern: hashlib.new("md5", ...)
-  - pattern: hashlib.new('md5', ...)    # Redundant - quotes equivalent
+  - pattern: hashlib.new('md5', ...)    # Redundant - quotes equivalent in Python
   - pattern: hashlib.new("md5")         # Redundant - covered by ... variant
   - pattern: hashlib.new('md5')         # Redundant - quotes + covered
 ```
@@ -240,13 +241,13 @@ pattern-either:
 semgrep --test --config rule.yaml test-file
 ```
 
-**Final verification**: Output MUST show `✓ All tests passed` after optimization. If any test fails, revert the optimization that caused it.
+**Final verification**: Output MUST show "All tests passed" after optimization. If any test fails, revert the optimization that caused it.
 
 **Task complete ONLY when**: All tests pass after optimization.
 
 ## Key Requirements
 
-- **Read documentation first**: Fetch official Semgrep docs before creating rules
+- **Read documentation first**: See [Documentation](#documentation) before creating rules
 - **Tests must pass 100%**: Do not finish until all tests pass
 - **`ruleid:` placement**: Comment goes on line IMMEDIATELY BEFORE the flagged code
 - **Avoid generic patterns**: Rules must be specific, not match broad patterns
@@ -260,7 +261,7 @@ semgrep --test --config rule.yaml test-file
 - [Pattern Syntax](https://semgrep.dev/docs/writing-rules/pattern-syntax) - Pattern matching, metavariables, and ellipsis usage
 - [Testing Rules](https://semgrep.dev/docs/writing-rules/testing-rules) - Testing rules to properly catch code patterns and avoid false positives
 - [Writing Rules Index](https://github.com/semgrep/semgrep-docs/tree/main/docs/writing-rules/) - Full documentation index (browse for taint mode, testing, etc.)
-- [Trail of Bits Testing Handbook - Semgrep](https://appsec.guide/docs/static-analysis/semgrep/advanced/) - Advanced patterns, taint tracking, and practical examples
+- [Trail of Bits Testing Handbook - Semgrep](https://appsec.guide/docs/static-analysis/semgrep/advanced/) - Patterns, taint tracking, and practical examples
 
 ## Next Steps
 

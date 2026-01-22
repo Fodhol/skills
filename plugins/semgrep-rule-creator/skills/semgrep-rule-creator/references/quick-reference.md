@@ -7,7 +7,7 @@ rules:
   - id: rule-id-here          # Unique identifier (lowercase, hyphens)
     languages:                 # Target language(s)
       - python
-    severity: ERROR           # LOW, MEDIUM, HIGH, CRITICAL (ERROR/WARNING/INFO are legacy)
+    severity: HIGH            # LOW, MEDIUM, HIGH, CRITICAL (ERROR/WARNING/INFO are legacy)
     message: Description      # Shown when rule matches
     pattern: code(...)        # OR use patterns/pattern-either/mode:taint
 ```
@@ -85,7 +85,7 @@ rules:
   - id: taint-rule
     mode: taint
     languages: [python]
-    severity: ERROR
+    severity: HIGH
     message: Tainted data reaches sink
     pattern-sources:
       - pattern: user_input()
@@ -147,40 +147,6 @@ future_detection()             # Known limitation, should match later
 
 # todook: my-rule-id
 future_fp_fix()                # Known FP, should not match later
-```
-
-## Common Patterns by Language
-
-### Python
-```yaml
-pattern: os.system($CMD)
-pattern: subprocess.call($CMD, shell=True, ...)
-pattern: eval($CODE)
-pattern: pickle.loads($DATA)
-pattern: $CURSOR.execute($QUERY, ...)
-```
-
-### JavaScript
-```yaml
-pattern: eval($CODE)
-pattern: document.innerHTML = $DATA
-pattern: $EL.innerHTML = $DATA
-pattern: new Function($CODE)
-pattern: $DB.query($SQL)
-```
-
-### Java
-```yaml
-pattern: Runtime.getRuntime().exec($CMD)
-pattern: (Statement $S).executeQuery($SQL)
-pattern: new ProcessBuilder($CMD, ...)
-```
-
-### Go
-```yaml
-pattern: exec.Command($CMD, ...)
-pattern: template.HTML($DATA)
-pattern: $DB.Query($SQL, ...)
 ```
 
 ## Debugging Commands
